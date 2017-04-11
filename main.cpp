@@ -1,13 +1,17 @@
-#include <iostream>
+#include "iostream"
 #include <cmath>
 #include <math.h>
 //#include "stdio.h"
 #include "sse.hpp"
 #include "operation.h"
-#include <Python.h>
-#include <ndarrayobject.h>
+//#include <Python.h>
+//#include <ndarrayobject.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 using namespace std;
+using namespace cv;
 
 #define PI 3.14159265f
 //
@@ -137,38 +141,50 @@ void gradHist( float *M, float *O, float *H, int h, int w,
 }
 
 int main(int argc, char *argv[]) {
-    Py_Initialize();
-    if (!Py_IsInitialized()) {
+//    Py_Initialize();
+//    if (!Py_IsInitialized()) {
+//        return -1;
+//    }
+//    PyObject* pModule = NULL;
+//    PyObject* pFunc = NULL;
+//    PyObject* pArgs = NULL;
+//    PyArrayObject* test_array;
+//
+//
+//    PyRun_SimpleString("import sys");
+//    PyRun_SimpleString("sys.path.append('C:/Users/nieka/ClionProjects/test_ccc')");
+//
+//    pModule = PyImport_ImportModule("img_read");
+//    if (!pModule) {
+//        printf("can't find Module!");
+//        return -1;
+//    }
+//
+//    pFunc = PyObject_GetAttrString(pModule, "print_arr");
+//    if (!pFunc || !PyCallable_Check(pFunc)) {
+//        printf("can't find Func!");
+//        return -1;
+//    }
+//
+//    pArgs = PyTuple_New(1);
+//    PyTuple_SetItem(pArgs, 0, Py_BuildValue("s", "C:/Users/nieka/ClionProjects/test_ccc/peppers.png"));
+//
+//    PyEval_CallObject(pFunc,pArgs);
+//
+//    Py_Finalize();
+//
+    Mat img = imread("C:/Users/nieka/ClionProjects/test_ccc/peppers.png");
+    if (img.empty()) {
+        cout << "Read Error" << endl;
         return -1;
     }
-    PyObject* pModule = NULL;
-    PyObject* pFunc = NULL;
-    PyObject* pArgs = NULL;
-    PyArrayObject* test_array;
 
-
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.path.append('C:/Users/nieka/ClionProjects/test_ccc')");
-//    PyRun_SimpleString("sys.path.append('./')");
-
-    pModule = PyImport_ImportModule("img_read");
-    if (!pModule) {
-        printf("can't find Module!");
+    cout << "Read Succeed!" << endl;
+    namedWindow("peppers", CV_WINDOW_AUTOSIZE);
+    imshow("peppers", img);
+    if (waitKey() == 27) {
         return -1;
     }
-
-    pFunc = PyObject_GetAttrString(pModule, "print_arr");
-    if (!pFunc || !PyCallable_Check(pFunc)) {
-        printf("can't find Func!");
-        return -1;
-    }
-
-    pArgs = PyTuple_New(1);
-    PyTuple_SetItem(pArgs, 0, Py_BuildValue("s", "C:/Users/nieka/ClionProjects/test_ccc/peppers.png"));
-
-    PyEval_CallObject(pFunc,pArgs);
-
-    Py_Finalize();
-
+    destroyAllWindows();
     return 0;
 }
